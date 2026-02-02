@@ -67,6 +67,108 @@ body {
   font-size: 1rem;
 }
 
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  margin-bottom: 24px;
+  background: white;
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+  transition: all 0.2s ease;
+  min-height: 180px;
+}
+
+.upload-area.dragging {
+  border-color: var(--color-accent);
+  background-color: rgba(247, 103, 59, 0.05);
+}
+
+.upload-area.has-file {
+  border-style: solid;
+  border-color: var(--color-primary);
+}
+
+.upload-icon {
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+}
+
+.upload-text {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.upload-or {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: 12px;
+}
+
+.upload-button {
+  padding: 10px 24px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+  background-color: #0a2d3d;
+  transform: translateY(-1px);
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-accent);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.file-name {
+  font-size: 1rem;
+  color: var(--color-text);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-file {
+  padding: 6px 12px;
+  background: none;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-file:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
 .display-areas {
   display: grid;
   grid-template-columns: 1fr 1fr;

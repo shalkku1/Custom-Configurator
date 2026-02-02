@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 
 const API_URL = ''
@@ -8,6 +8,54 @@ function App() {
   const [gptResponse, setGptResponse] = useState('')
   const [grokResponse, setGrokResponse] = useState('')
   const [loading, setLoading] = useState(false)
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileSelect = (file: File) => {
+    if (file.type === 'application/pdf') {
+      setUploadedFile(file)
+    } else {
+      alert('Please upload a PDF file')
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file) {
+      handleFileSelect(file)
+    }
+  }
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      handleFileSelect(file)
+    }
+  }
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleRemoveFile = () => {
+    setUploadedFile(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
 
   const handleSubmit = async () => {
     if (!text.trim() || loading) return
@@ -56,6 +104,45 @@ function App() {
         <div className="welcome-text">
           <h2>How can I help you today?</h2>
           <p>Enter your message below to get started</p>
+        </div>
+
+        <div
+          className={`upload-area ${isDragging ? 'dragging' : ''} ${uploadedFile ? 'has-file' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileInputChange}
+            accept=".pdf,application/pdf"
+            hidden
+          />
+          {uploadedFile ? (
+            <div className="uploaded-file">
+              <span className="file-icon">PDF</span>
+              <span className="file-name">{uploadedFile.name}</span>
+              <button className="remove-file" onClick={handleRemoveFile}>
+                Remove
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="upload-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              </div>
+              <p className="upload-text">Drag and drop a PDF file here</p>
+              <p className="upload-or">or</p>
+              <button className="upload-button" onClick={handleUploadClick}>
+                Upload PDF
+              </button>
+            </>
+          )}
         </div>
 
         <div className="display-areas">
